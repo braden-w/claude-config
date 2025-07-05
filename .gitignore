@@ -1,0 +1,22 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*~
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+
+# Claude directories we don't want to share
+/projects/
+/statsig/
+/ide/
+/todos/
+
+# Keep only the config files we want to share
+# (everything else in ~/.claude should be ignored)
