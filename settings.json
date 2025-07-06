@@ -1,5 +1,10 @@
 {
   "model": "opus",
+  "permissions": {
+    "allow": [
+      "WebFetch"
+    ]
+  },
   "allow": [
     "Bash(rg:*)",
     "Bash(ls:*)",
@@ -123,6 +128,7 @@
   "allowedTools": [
     "WebFetch",
     "WebSearch",
-    "TodoRead"
+    "TodoRead",
+    "TodoWrite"
   ]
 }
