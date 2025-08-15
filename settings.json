@@ -128,7 +128,8 @@
       "Bash(gh:cache*list*)",
       "Bash(gh:help*)",
       "Bash(gh:version*)",
-      "Bash(gh:--version*)"
+      "Bash(gh:--version*)",
+      "Bash(mkdir:*)"
     ]
   }
 }
