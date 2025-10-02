@@ -1,7 +1,7 @@
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(git commit:*)
 description: Generate conventional commit message and create git commit
-model: claude-sonnet-4-0
+model: claude-sonnet-4-5
 ---
 
 # Generate Commit Message and Commit
