@@ -2,7 +2,7 @@
 allowed-tools: Bash(gh pr:*), Bash(git:*), Bash(npm:*), Bash(yarn:*), Bash(make:*), Bash(grep:*), Bash(find:*), Bash(cat:*), Bash(head:*), Bash(tail:*), Bash(wc:*), Bash(ls:*)
 argument-hint: [pr-number] [merge-strategy?]
 description: Checkout PR, merge main, and evaluate mergeability
-model: claude-3-5-sonnet-20241022
+model: sonnet
 ---
 
 ## Context Gathering
