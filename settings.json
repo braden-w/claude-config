@@ -135,41 +135,5 @@
     "deny": [],
     "ask": []
   },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|MultiEdit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "but claude pre-tool"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|MultiEdit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "but claude post-tool"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "but claude stop"
-          }
-        ]
-      }
-    ]
-  },
-  "alwaysThinkingEnabled": false,
-  "model": "haiku"
+  "model": "sonnet"
 }
