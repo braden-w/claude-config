@@ -1,112 +1,127 @@
 ---
-description: Generate comprehensive PR descriptions and update the PR
+description: Generate comprehensive PR descriptions with code examples and diagrams
 ---
 
 # Generate PR Description
 
-You are tasked with generating a comprehensive pull request description.
+Generate a PR description that explains WHY the change exists, shows HOW to use any new APIs, and includes diagrams for architecture changes.
 
-## Steps to Follow
+## Steps
 
-### 1. Identify the PR to Describe
-
-- Check if the current branch has an associated PR:
-  ```bash
-  gh pr view --json url,number,title,state 2>/dev/null
-  ```
-- If no PR exists for the current branch, list open PRs:
-  ```bash
-  gh pr list --limit 10 --json number,title,headRefName,author
-  ```
-- Ask the user which PR they want to describe if unclear
-
-### 2. Gather Comprehensive PR Information
+### 1. Identify the PR
 
 ```bash
-# Get the full PR diff
+gh pr view --json url,number,title,state 2>/dev/null
+# If no PR, list open PRs:
+gh pr list --limit 10 --json number,title,headRefName,author
+```
+
+### 2. Gather Information
+
+```bash
 gh pr diff {number}
-
-# Get commit history
-gh pr view {number} --json commits
-
-# Review the base branch
-gh pr view {number} --json baseRefName
-
-# Get PR metadata
-gh pr view {number} --json url,title,number,state
+gh pr view {number} --json commits,baseRefName,url,title,number,state
 ```
 
-If you get an error about no default remote repository, instruct the user to run `gh repo set-default` and select the appropriate repository.
+### 3. Analyze Changes
 
-### 3. Analyze the Changes Thoroughly
+- Read the entire diff
+- Identify the PROBLEM being solved (the "why")
+- Identify new APIs, functions, types, CLI commands, or endpoints
+- Identify architecture changes (data flow, component interactions)
 
-- Read through the entire diff carefully
-- For context, read any files that are referenced but not shown in the diff
-- Understand the purpose and impact of each change
-- Identify user-facing changes vs internal implementation details
-- Look for breaking changes or migration requirements
+### 4. Generate Description
 
-### 4. Run Verification Commands (Where Possible)
+**Structure (in order):**
 
-For verification steps that can be automated:
-- If it's a command you can run (like `bun run check`, `bun test`, etc.), run it
-- If it passes, note the success
-- If it fails, note what failed
-- If it requires manual testing (UI interactions, external services), note for user
+1. **Opening paragraph**: WHY this change exists. What problem does it solve? Link to previous PRs if this restores/continues prior work.
 
-### 5. Generate the Description
+2. **Diagram** (REQUIRED if architecture changed): ASCII flow diagram showing how components interact.
 
-Use this format:
+   ```
+   ┌─────────────┐     ┌─────────────┐
+   │  Component  │ ──> │  Component  │
+   └─────────────┘     └─────────────┘
+   ```
 
-```markdown
-## Summary
+3. **Code examples** (REQUIRED for API changes): Show actual usage, not descriptions.
 
-[1-3 sentences explaining what this PR does and why]
+   ```typescript
+   // Show the actual API call site
+   const result = newFunction({ param: "value" });
+   ```
 
-[Additional paragraph explaining how the implementation works if needed]
+4. **Implementation notes**: Technical decisions, why certain approaches were chosen.
 
-## Verification
+5. **Verification section**: What was tested (automated and manual).
 
-**Automated (completed):**
-- [x] Type checking passes: `bun run check`
-- [x] Tests pass: `bun test`
-- [ ] Linting: Failed - [explanation]
-
-**Manual testing needed:**
-- [ ] Feature works correctly in UI
-- [ ] No regressions in related features
-```
-
-### 6. Update the PR
-
-Update the PR description directly:
+### 5. Update the PR
 
 ```bash
 gh pr edit {number} --body "$(cat <<'EOF'
-[Your generated description here]
+[description here]
 EOF
 )"
 ```
 
-Confirm the update was successful.
+## Mandatory Requirements
 
-## Important Notes
+### Code Examples Required For:
 
-- Be thorough but concise - descriptions should be scannable
-- Focus on the "why" as much as the "what"
-- Include any breaking changes or migration notes prominently
-- If the PR touches multiple components, organize the description accordingly
-- Always attempt to run verification commands when possible
-- Clearly communicate which verification steps need manual testing
-- **Do NOT list files changed** - GitHub's "Files changed" tab already shows this
-- The description should explain WHY and HOW, not enumerate WHAT files
+- New functions, types, or exports
+- Changes to function signatures
+- New CLI commands or flags
+- New HTTP endpoints
+- Configuration changes
 
-## PR Description Guidelines
+**Good** (shows usage):
 
-From the project's git rules:
+```typescript
+const actions = {
+  posts: {
+    create: defineMutation({
+      input: type({ title: "string" }),
+      handler: ({ title }) => db.insert({ title }),
+    }),
+  },
+};
 
-- Use clean paragraph format instead of bullet points or structured sections
-- **First Paragraph**: Explain what the change does and what problem it solves
-- **Subsequent Paragraphs**: Explain how the implementation works
-- Avoid: Section headers like "## Summary" or "## Changes Made", bullet point lists, marketing language
-- Focus on conversational but precise language
+const cli = createCLI(client, { actions });
+```
+
+**Bad** (only describes):
+
+> This PR adds an action system that generates CLI commands from action definitions.
+
+### Diagrams Required For:
+
+- Changes to data flow
+- New component interactions
+- Architecture refactors
+
+### The "Why" Must Come First
+
+Every PR description MUST start with the problem being solved. Not what files changed, not how it works—WHY.
+
+**Good opening**:
+
+> This PR restores the action system removed in #1209, but with a clearer understanding of where the boundary belongs.
+
+**Bad opening**:
+
+> This PR adds defineQuery and defineMutation functions.
+
+## What to Avoid
+
+- Listing files changed (GitHub shows this)
+- Section headers like "## Summary" or "## Changes Made"
+- Bullet point lists for the main content
+- Marketing language ("revolutionary", "seamless")
+- Walls of text without code examples
+- AI watermarks or attribution
+
+## Voice
+
+- Conversational but precise
+- Direct and honest
+- Show your thinking: "We considered X, but Y made more sense because..."

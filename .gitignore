@@ -17,6 +17,11 @@ Thumbs.db
 /statsig/
 /ide/
 /todos/
-
-# Keep only the config files we want to share
-# (everything else in ~/.claude should be ignored)
+/debug/
+/file-history/
+/plans/
+/plugins/
+/shell-snapshots/
+/transcripts/
+/session-env/
+history.jsonl

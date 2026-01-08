@@ -135,5 +135,6 @@
     "deny": [],
     "ask": []
   },
-  "model": "sonnet"
+  "model": "sonnet",
+  "alwaysThinkingEnabled": false
 }
